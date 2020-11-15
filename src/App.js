@@ -10,19 +10,38 @@ import Button from 'react-bootstrap/Button';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Image from 'react-bootstrap/Image';
+import Modal from 'react-bootstrap/Modal';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showDownloadModal : false
+    };
+
     this.textUpdate = this.textUpdate.bind(this);
     this.clearText = this.clearText.bind(this);
+    this.openDownloadModal = this.openDownloadModal.bind(this);
+    this.closeDownloadModal = this.closeDownloadModal.bind(this);
   }
 
   textUpdate() {
     setTimeout(function() {
       this.refs.diagramImage.src = patrickImage;
     }.bind(this), 1000);
+  }
+
+  openDownloadModal() {
+    this.setState({
+      showDownloadModal : true
+    });
+  }
+
+  closeDownloadModal() {
+    this.setState({
+      showDownloadModal : false
+    });
   }
 
   clearText() {
@@ -58,13 +77,27 @@ class App extends React.Component {
                     Placeholder Abstract
                   </Tab>
                 </Tabs>
-                <Button className="mx-2" variant="primary">Download CSV</Button>
-                <Button className="mx-2" variant="primary">Download Image</Button>
+                <Button className="mx-2" variant="primary" onClick={this.openDownloadModal}>Download CSV</Button>
+                <Button className="mx-2" variant="primary" onClick={this.openDownloadModal}>Download Image</Button>
                 <Button className="mx-2" variant="primary">Share</Button>
               </div>
             </div>
           </div>
         </div>
+        <Modal show={this.state.showDownloadModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Download?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to download?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.closeDownloadModal}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={this.closeDownloadModal}>
+              Download
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
